@@ -1,0 +1,65 @@
+{
+  "id": "3311420",
+  "name": "猫眼电影",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "677569",
+      "name": "放大镜",
+      "font_class": "fangdajing",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "1162336",
+      "name": "右箭头",
+      "font_class": "youjiantou",
+      "unicode": "e6e0",
+      "unicode_decimal": 59104
+    },
+    {
+      "icon_id": "1242678",
+      "name": "菜单",
+      "font_class": "ego-caidan",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "2578460",
+      "name": "优惠券",
+      "font_class": "youhuiquan",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "4867094",
+      "name": "视频",
+      "font_class": "shipin",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "11372654",
+      "name": "电影",
+      "font_class": "dianying",
+      "unicode": "e8ae",
+      "unicode_decimal": 59566
+    },
+    {
+      "icon_id": "18426683",
+      "name": "小视频，影视，48",
+      "font_class": "xiaoshipinyingshi48",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "19449155",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    }
+  ]
+}
