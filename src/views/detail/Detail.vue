@@ -1,9 +1,10 @@
 <template>
   <div class="movie-detail">详情页面<a href="#"
-       @click="back">fanhu</a></div>
+       @click="back">Fanhui</a></div>
 </template>
 
 <script>
+import { getMovieDetail } from '@/service/api'
 export default {
   name: 'm-detail',
   data () {
@@ -14,8 +15,8 @@ export default {
   created () {
     this.index = 1
   },
-  mounted () {
-    console.log(this.$route)
+  async mounted () {
+    await getMovieDetail(this.$route.params.id)
   },
   methods: {
     back () {

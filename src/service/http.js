@@ -1,5 +1,8 @@
 // 请求封装
-const BASE_URL = 'http://www.pudge.wang:3080/api'
+const debug = process.env.NODE_ENV !== 'production'
+const BASE_URL = debug
+  ? 'http://www.pudge.wang:3080/api'
+  : '线上地址'
 
 const http = {
   get (url, params) {

@@ -160,7 +160,7 @@ body {
 .slide-right-leave-active,
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: all 0.3s;
+  transition: all 0.3s linear;
   height: 100%;
   will-change: transfrom;
 }

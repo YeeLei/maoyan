@@ -1,31 +1,37 @@
 <template>
-  <div class="top-rated">
-    <p class="title">最受好评电影</p>
+  <div class="top-rated"
+       v-if="data.length > 0">
+    <p class="title">{{title}}</p>
     <div class="wrapper">
       <scroll :scrollX="true">
         <div class="top-rated-list">
-          <a href="#"
-             class="top-rated-item"
-             v-for="(item) in list"
+          <a class="top-rated-item"
+             v-for="(item) in data"
              :key="item._id">
             <div class="poster">
-              <img :src="item.imgUrl"
-                   :alt="item.title" />
+              <img :src="item.imgUrl || item.img"
+                   :alt="item.title"
+                   @load="imageLoad" />
               <span class="wish-bg"></span>
               <span class="wish"
                     v-if="item.wishNum !== null">
                 <span class="wish-num"
-                      v-html="item.wishNum"></span>
-                人想看
+                      v-html="item.wishNum || item.wish"></span>人想看
               </span>
               <span class="score"
                     v-else>观众评分
                 <span class="rated-score"
-                      v-html="item.score"></span></span>
+                      v-html="item.score">
+                </span>
+              </span>
             </div>
             <h5 class="name"
-                v-html="item.title">
+                v-html="item.title || item.nm">
             </h5>
+            <div class="date"
+                 v-if="item.comingTitle">
+              {{formatDate(item.comingTitle)}}
+            </div>
           </a>
         </div>
       </scroll>
@@ -34,21 +40,29 @@
 </template>
 
 <script>
-import { getRatedApi } from '@/service/api'
 import Scroll from '@/components/base/scroll/scroll.vue'
 export default {
-  data () {
-    return {
-      list: []
+  props: {
+    data: {
+      type: Array,
+      default: null
+    },
+    title: {
+      type: String,
+      default: ''
     }
   },
-  created () {
-    this.getRatedList()
+  data () {
+    return {
+
+    }
   },
   methods: {
-    async getRatedList () {
-      const res = await getRatedApi()
-      this.list = res.result
+    imageLoad () {
+      this.$emit('imageLoad')
+    },
+    formatDate (val) {
+      return val.split(' ')[0]
     }
   },
   components: {
@@ -116,10 +130,14 @@ export default {
         }
       }
       .name {
-        font-size: 13px;
+        font-size: $sm-font;
         color: #222;
-        margin: 0 0 3px;
+        margin: 3px 0;
         @include no-wrap();
+      }
+      .date {
+        font-size: $xxs-font;
+        color: #999;
       }
     }
   }
