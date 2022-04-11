@@ -17,8 +17,8 @@ const Classic = () => import('../views/home/movies/components/list/classic/Movie
 
 Vue.use(VueRouter)
 
+// 解决编程时导航重复点击的报错
 const originalPush = VueRouter.prototype.push
-
 VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
@@ -44,34 +44,37 @@ const routes = [
       {
         path: '/movies',
         component: Movies,
-        redirect: '/hot',
         meta: {
           index: 11
         },
         children: [
           {
-            path: '/hot',
+            path: '/',
+            redirect: '/movies/hot'
+          },
+          {
+            path: '/movies/hot',
             component: Hot,
             meta: {
               index: 0
             }
           },
           {
-            path: '/cinema',
+            path: '/movies/cinema',
             component: Cinema,
             meta: {
               index: 1
             }
           },
           {
-            path: '/wait',
+            path: '/movies/wait',
             component: Wait,
             meta: {
               index: 2
             }
           },
           {
-            path: '/classic',
+            path: '/movies/classic',
             component: Classic,
             meta: {
               index: 3

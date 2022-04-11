@@ -44,7 +44,9 @@ export default {
   },
   methods: {
     showLoading () {
-      this.flag = true
+      setTimeout(() => {
+        this.flag = true
+      }, 300)
       setTimeout(async () => {
         const res1 = await getRatedApi()
         const res2 = await getMoviesApi()

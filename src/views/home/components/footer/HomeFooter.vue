@@ -3,8 +3,6 @@
     <ul>
       <router-link v-for="item in list"
                    :key="item.title"
-                   :class="{ active: item.title === activeTitle }"
-                   @click.native="activeTitle = item.title"
                    :to="item.path"
                    tag="li">
         <span class="iconfont"
@@ -45,9 +43,10 @@ export default {
           icon: 'icon-wode',
           path: '/mine'
         }
-      ],
-      activeTitle: '电影/影院'
+      ]
     }
+  },
+  methods: {
   }
 }
 </script>
@@ -87,7 +86,7 @@ footer {
       }
     }
 
-    .active {
+    .router-link-active {
       color: $theme-color;
     }
   }

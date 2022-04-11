@@ -13,9 +13,10 @@ export const getMoviesApi = () => http.get('/movies/list')
 // 首页热映下拉加载更多接口
 export const getMoreMoviesApi = (data) => http.post('/movies/more', data)
 // 首页电影详情接口
-export const getMovieDetail = (data) => http.post('/movies/detail', data)
+export const getMovieDetailApi = (data) => http.post('/movies/detail', data)
 // 选择地区接口
-export const getAreaList = () => http.get('/area/list')
+export const getAreaListApi = () => http.get('/area/list')
+
 // 首页待映最受期待列表接口
 export const getWaitRatedApi = () => fetch(BASE_URL + '/api/wait/ratedlist')
   .then(res => res.json()).then(data => {

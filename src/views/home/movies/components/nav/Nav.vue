@@ -28,19 +28,19 @@ export default {
       list: [
         {
           title: '热映',
-          path: '/hot'
+          path: '/movies/hot'
         },
         {
           title: '影院',
-          path: '/cinema'
+          path: '/movies/cinema'
         },
         {
           title: '待映',
-          path: '/wait'
+          path: '/movies/wait'
         },
         {
           title: '经典电影',
-          path: '/classic'
+          path: '/movies/classic'
         }
       ],
       activeTitle: '热映'

@@ -23,6 +23,7 @@ export default {
 @import "@/assets/scss/mixin.scss";
 .no-result {
   width: 100%;
+  padding-bottom: 5px;
   @include center();
   .desc {
     line-height: 20px;

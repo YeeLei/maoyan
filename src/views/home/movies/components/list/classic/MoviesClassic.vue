@@ -31,7 +31,9 @@ export default {
   },
   methods: {
     showLoading () {
-      this.flag = true
+      setTimeout(() => {
+        this.flag = true
+      }, 300)
       setTimeout(async () => {
         const res = await getClassicMoviesApi()
         this.listMovies = res.classicMovies.list

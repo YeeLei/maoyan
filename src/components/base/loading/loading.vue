@@ -26,7 +26,7 @@ export default {
 @import "@/assets/scss/var.scss";
 @import "@/assets/scss/mixin.scss";
 .loading {
-  margin-top: 5px;
+  padding: 5px 0;
   width: 100%;
   @include center();
   .icon {
