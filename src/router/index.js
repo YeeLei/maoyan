@@ -30,7 +30,8 @@ const routes = [
   },
   {
     path: '/detail/:id',
-    component: Detail
+    component: Detail,
+    props: true
   },
   {
     path: '/city',
@@ -119,7 +120,14 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 export default router

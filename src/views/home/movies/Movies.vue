@@ -8,7 +8,7 @@
       <movies-nav />
       <transition :name="transitionName">
         <keep-alive>
-          <router-view ref="route"></router-view>
+          <router-view></router-view>
         </keep-alive>
       </transition>
     </div>

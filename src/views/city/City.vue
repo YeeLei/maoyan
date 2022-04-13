@@ -11,7 +11,8 @@
               定位城市
             </div>
             <div class="city-list">
-              <div class="location-city city-item">杭州</div>
+              <div class="location-city city-item"
+                   @click="selectCity(localCity)">{{localCity.name}}</div>
             </div>
           </div>
           <div class="history-city"
@@ -20,10 +21,10 @@
               最近访问城市
             </div>
             <div class="city-list">
-              <div class="city-item">杭州</div>
-              <div class="city-item">深圳</div>
-              <div class="city-item">上海</div>
-              <div class="city-item">广州</div>
+              <div class="city-item"
+                   v-for="item in historyCityList"
+                   :key="item.cityId"
+                   @click="selectCity(item)">{{item.name}}</div>
             </div>
           </div>
           <div v-for="(item,index) in cityList"
@@ -37,8 +38,9 @@
               </div>
               <div class="city-list">
                 <div class="city-item"
-                     v-for="city in item.cities"
-                     :key="city.cityId">{{city.name}}</div>
+                     v-for="(city,index) in item.cities"
+                     :key="index"
+                     @click="selectCity(city)">{{city.name}}</div>
               </div>
             </div>
             <div class="letter-city"
@@ -49,8 +51,9 @@
               </div>
               <ul class="city-letter-list">
                 <li class="city-letter-item"
-                    v-for="city in item.cities"
-                    :key="city.cityId">{{city.name}}</li>
+                    v-for="(city,index) in item.cities"
+                    :key="index"
+                    @click="selectCity(city)">{{city.name}}</li>
               </ul>
             </div>
           </div>
@@ -81,7 +84,7 @@
 </template>
 
 <script>
-import { getAreaListApi } from '@/service/api'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import scroll from '@/components/base/scroll/scroll.vue'
 
 const TITLE_HEIGHT = 30
@@ -90,7 +93,6 @@ export default {
   name: 'm-city',
   data () {
     return {
-      cityList: [],
       currentIndex: 0,
       listHeight: [],
       probeType: 3,
@@ -117,13 +119,17 @@ export default {
       return this.shortcutList[this.currentIndex]
         ? this.shortcutList[this.currentIndex].toUpperCase()
         : ''
-    }
-  },
-  mounted () {
-    // 计算楼层高度
-    this.$nextTick(() => {
-      this.calculateHight()
+    },
+    ...mapState({
+      localCity: (state) => state.city.localCity,
+      cityList: (state) => state.city.cityList,
+      historyCityList: (state) => state.city.historyCityList
     })
+  },
+  async mounted () {
+    await this.getCityListAsync()
+    // 计算楼层高度
+    this.calculateHight()
   },
   methods: {
     shortcutTitle (item) {
@@ -141,20 +147,22 @@ export default {
       // 获取Y轴方向上的滚动距离
       this.scrollY = pos.y
     },
-    // 计算每一层列表的高度.并保存到this.listHeight
+    // 计算每一层列表的高度，并保存到this.listHeight
     calculateHight () {
       // 获取所有的列表层
       const list = this.$refs.listGroup
-      let height = 0
-      // 默认第一层高度为0
-      this.listHeight.push(height)
-      this.listHeight.push(this.$refs.localCity.clientHeight)
-      this.listHeight.push(this.$refs.historyCity.clientHeight + this.$refs.localCity.clientHeight)
-      height += this.$refs.historyCity.clientHeight + this.$refs.localCity.clientHeight
-      for (let i = 0; i < list.length; i++) {
-        const item = list[i]
-        height += item.clientHeight
+      if (list) {
+        let height = 0
+        // 默认第一层高度为0
         this.listHeight.push(height)
+        this.listHeight.push(this.$refs.localCity.clientHeight)
+        this.listHeight.push(this.$refs.historyCity.clientHeight + this.$refs.localCity.clientHeight)
+        height += this.$refs.historyCity.clientHeight + this.$refs.localCity.clientHeight
+        for (let i = 0; i < list.length; i++) {
+          const item = list[i]
+          height += item.clientHeight
+          this.listHeight.push(height)
+        }
       }
     },
     onShortcutTouchStart (e) {
@@ -178,7 +186,35 @@ export default {
       } else {
         this.$refs.scroll.scroll.scrollToElement(this.$refs.listGroup[index - 2], 0)
       }
-    }
+    },
+    selectCity (item) {
+      this.changeCity(item)
+      // 保存到本地
+      localStorage.setItem('localCity', JSON.stringify(item))
+      // 保存选择城市的历史记录
+      let flag = false
+      if (this.historyCityList.length !== 0) {
+        for (const ele of this.historyCityList) {
+          if (ele.name === item.name) {
+            flag = true
+            break
+          }
+        }
+        if (!flag) {
+          const arr = this.historyCityList.concat()
+          arr.push(item)
+          this.changeHistoryList(arr)
+          localStorage.setItem('historyCity', JSON.stringify(arr))
+        }
+      } else {
+        this.historyCityList.push(item)
+        localStorage.setItem('historyCity', JSON.stringify(this.historyCityList))
+      }
+
+      this.$router.go(-1)
+    },
+    ...mapMutations(['changeCity', 'changeHistoryList']),
+    ...mapActions(['getCityListAsync'])
   },
   watch: {
     // 监听Y轴方向上滚动的距离
@@ -207,13 +243,14 @@ export default {
       const fixedTop =
         newVal > 0 && newVal < TITLE_HEIGHT ? newVal - TITLE_HEIGHT : 0
       this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
+    },
+    $route (to) {
+      if (/^\/city/.test(to.path)) {
+        this.getCityListAsync()
+        this.$refs.scroll.scroll.scrollTo(0, 0)
+      }
     }
-  },
-  async beforeRouteEnter (to, from, next) {
-    const res = await getAreaListApi()
-    next((vm) => {
-      vm.cityList = res.result
-    })
+
   }
 }
 
@@ -287,14 +324,12 @@ export default {
     padding: 15px 0;
     border-radius: 10px;
     text-align: center;
-    // background: rgba(0, 0, 0, 0.3);
     z-index: 1000;
     .item {
       width: 40px;
       padding: 3px;
       line-height: 16px;
       text-align: center;
-      // color: rgba(255, 255, 255, 0.8);
       font-size: $xs-font;
       // &.current {
       //   color: $theme-color;

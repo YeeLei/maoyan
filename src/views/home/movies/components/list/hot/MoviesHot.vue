@@ -43,19 +43,15 @@ export default {
     this.showLoading()
   },
   methods: {
-    showLoading () {
-      setTimeout(() => {
-        this.flag = true
-      }, 300)
-      setTimeout(async () => {
-        const res1 = await getRatedApi()
-        const res2 = await getMoviesApi()
-        this.listRated = res1.result
-        this.listMovies = res2.result
-        this.ids = res2.ids
-        this.startIndex = res2.result.length
-        this.flag = false
-      }, 1000)
+    async showLoading () {
+      this.flag = true
+      const res1 = await getRatedApi()
+      const res2 = await getMoviesApi()
+      this.listRated = res1.result
+      this.listMovies = res2.result
+      this.ids = res2.ids
+      this.startIndex = res2.result.length
+      this.flag = false
     },
     // 下拉加载更多
     async pullingUp () {

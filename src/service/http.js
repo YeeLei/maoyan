@@ -1,8 +1,8 @@
 // 请求封装
 // http.js用来做请求封装的
 
+import NProgress from 'nprogress'
 const BASE_URL = 'http://www.pudge.wang:3080/api'
-
 const http = {
   get (url, params) {
     if (params) {
@@ -22,7 +22,7 @@ const http = {
   },
   // 一般来说，post请求习惯用data表示参数的形参，get请求习惯使用params
   post (url, data) {
-    // console.log(data);
+    NProgress.start()
     return fetch(BASE_URL + url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -30,7 +30,10 @@ const http = {
         'Content-Type': 'application/json'
       }
     })
-      .then((response) => response.json())
+      .then((response) => {
+        NProgress.done()
+        return response.json()
+      })
       .then((res) => {
         if (res.status === 0) {
           return res

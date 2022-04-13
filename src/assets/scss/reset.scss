@@ -160,7 +160,7 @@ body {
 .slide-right-leave-active,
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: all 0.3s linear;
+  transition: all 0.2s linear;
   height: 100%;
   will-change: transfrom;
 }
@@ -179,4 +179,17 @@ body {
 .slide-left-leave-active {
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
+}
+
+#nprogress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100% !important;
+}
+
+#nprogress .bar {
+  height: 2px !important;
+  background: rgb(57, 137, 58);
 }

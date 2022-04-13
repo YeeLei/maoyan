@@ -30,15 +30,11 @@ export default {
     this.showLoading()
   },
   methods: {
-    showLoading () {
-      setTimeout(() => {
-        this.flag = true
-      }, 300)
-      setTimeout(async () => {
-        const res = await getClassicMoviesApi()
-        this.listMovies = res.classicMovies.list
-        this.flag = false
-      }, 1000)
+    async showLoading () {
+      this.flag = true
+      const res = await getClassicMoviesApi()
+      this.listMovies = res.classicMovies.list
+      this.flag = false
     }
   },
   components: {

@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <span class="city"
-          @click="selectCity">杭州 <i class="citt-arrow"></i></span>
+    <div class="city"
+         @click="selectCity"><span>{{cityName}}</span><i class="citt-arrow"></i></div>
     <ul ref="ul">
       <router-link v-for="(item) in list"
                    :key="item.title"
@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+const OFFSETWIDTH = 62
+
 export default {
   name: 'm-nav',
   data () {
@@ -46,6 +49,11 @@ export default {
       activeTitle: '热映'
     }
   },
+  computed: {
+    ...mapState({
+      cityName: (state) => state.city.localCity.name
+    })
+  },
   mounted () {
     this.list.forEach((item, index) => {
       if (this.$route.path === item.path) {
@@ -53,11 +61,11 @@ export default {
       }
     })
     const el = this.$refs.li[this.currentIndex].$el
-    this.$refs.line.style.left = 62 + el.offsetLeft + (el.offsetWidth / 2) + 'px'
+    this.$refs.line.style.left = OFFSETWIDTH + el.offsetLeft + (el.offsetWidth / 2) + 'px'
   },
   methods: {
     handleNavClick (el) {
-      this.$refs.line.style.left = 62 + el.srcElement.offsetLeft + (el.srcElement.offsetWidth / 2) + 'px'
+      this.$refs.line.style.left = OFFSETWIDTH + el.srcElement.offsetLeft + (el.srcElement.offsetWidth / 2) + 'px'
     },
     selectCity () {
       this.$router.push({
@@ -84,7 +92,9 @@ nav {
   .city {
     width: 62px;
     margin-left: 10px;
-    @include center();
+    text-align: center;
+    line-height: 44px;
+    @include no-wrap();
     .citt-arrow {
       width: 0;
       height: 0;

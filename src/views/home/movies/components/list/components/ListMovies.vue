@@ -25,7 +25,7 @@
             </div>
             <div class="detail">
               <div class="wantsee"
-                   v-if="$route.path!=='/classic'">
+                   v-if="$route.path!=='/movies/classic'">
                 <div class="wantsee"
                      v-if="item.sc !== 0">
                   <span class="p-suffix">观众评</span>
@@ -55,21 +55,13 @@
               </div>
             </div>
           </div>
-          <div class="button"
-               v-if="$route.path!=='/classic'">
+          <div class="button">
             <div class="btn"
-                 v-if="$route.path==='/hot'"
+                 v-if="$route.path==='/movies/hot'"
                  :class="item.preShow ? 'blue':'red'">{{item.preShow ? '预售':'购票'}}</div>
             <div class="btn"
                  v-else
                  :class="item.showStateButton ? 'blue':'yellow'">{{item.preShow ? '预售':'想看'}}</div>
-          </div>
-          <div class="button"
-               v-else>
-            <span class="grade"
-                  v-if="item.sc !== 0">{{item.sc}}<span class="score">分</span></span>
-            <span v-else
-                  class="score">暂无评分</span>
           </div>
         </div>
       </div>
